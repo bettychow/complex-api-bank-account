@@ -6,31 +6,24 @@ const uuid = require ('uuid/v4')
 
 
 const getAll = (params) => {
-  //console.log('ppppp', params)
   let acctId = params.acctId
-  //const transactions = []
   let accounts = fs.readFileSync(accountsPath, 'utf-8')
   const accountsArr = JSON.parse(accounts)
-
   const accountFound = accountsArr.find(account => account.id === acctId )
 
   return accountFound.transactions
-
 }
 
 const getOne = (params) => {
-  
   let errors = []
   let acctId = params.acctId
   let transId = params.transId
+  let response 
   const accounts = fs.readFileSync(accountsPath, 'utf-8')
   const accountsArr = JSON.parse(accounts)
-  let response 
   const accountFound = accountsArr.find(account => account.id === acctId)
-
-  if(accountFound) {
-    const transactions = accountFound.transactions
-    const transFound = transactions.find(transaction => transaction.id === transId)
+  const transactions = accountFound.transactions
+  const transFound = transactions.find(transaction => transaction.id === transId)
 
     if(transFound) {
       response = transFound
@@ -38,12 +31,8 @@ const getOne = (params) => {
       errors.push('Transaction id not found')
       response = { errors }
     }
-  } else {
-    errors.push('Account not found')
-    response = { errors }
-  }
 
-return response
+  return response
 }
 
 const create = (params, body) => {
@@ -91,11 +80,11 @@ const update = (params, body) => {
   let amount = body.amount
   let pending = body.pending
   
+  const accounts = fs.readFileSync(accountsPath, 'utf-8')
+  const accountsArr = JSON.parse(accounts)
+  const accountFound = accountsArr.find(account => account.id === acctId)
 
-  if(title && amount && pending) {
-    const accounts = fs.readFileSync(accountsPath, 'utf-8')
-    const accountsArr = JSON.parse(accounts)
-    const accountFound = accountsArr.find(account => account.id === acctId)
+    if(title && amount && pending) {
     const transactions = accountFound.transactions
     let transUpdated
 
@@ -111,16 +100,16 @@ const update = (params, body) => {
     const updatedAccounts = JSON.stringify(accountsArr)
     fs.writeFileSync(accountsPath, updatedAccounts)
     response = transUpdated
+    } else {
+      errors.push('title, amount and pending are required')
+      response = { errors } 
+    }
 
-  } else {
-    errors.push('title, amount and pending are required')
-    response = { errors }
-  }
   return response
 }
 
 const del = (params) => {
-  const errors = []
+  let errors = []
   let acctId = params.acctId
   let transId = params.transId
   let accounts = fs.readFileSync(accountsPath, 'utf-8')

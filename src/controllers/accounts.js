@@ -8,7 +8,6 @@ const getAll = (req, res) => {
 }
 
 const getOne = (req, res, next) => {
-  console.log('tttttt', req.params)
   const data = model.getOne(req.params)
   if(data.errors) {
     return next({ status: 400, message: 'Cannot find account', errors: data.errors })

@@ -8,10 +8,9 @@ const getAll = (req, res) => {
 }
 
 const getOne = (req, res, next) => {
-  //console.log('rrrrrr', req.params)
   const data = model.getOne(req.params)
   if(data.errors) {
-    return next({ status: 400, message: 'Cannot find account', errors: data.errors })
+    return next({ status: 400, message: 'Cannot find transaction', errors: data.errors })
   }
   res.status(200).json({ data })
 }
@@ -29,16 +28,15 @@ const create = (req, res, next) => {
 const update = (req, res, next) => {
   const data = model.update(req.params, req.body)
   if(data.errors) {
-    return next({ status: 400, message: 'Cannot update account', errors: data.errors })
+    return next({ status: 400, message: 'Cannot update transaction', errors: data.errors })
   }
   res.status(200).json({ data })
 }
 
 const del = (req, res, next) => {
-  console.log('rrrrrr', req.params)
   const data = model.del(req.params)
   if(data.errors) {
-    return next({ status: 400, message: 'Cannot delete account', errors: data.errors })
+    return next({ status: 400, message: 'Cannot delete transaction', errors: data.errors })
   }
   res.status(204).json({ data })
 }

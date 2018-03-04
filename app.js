@@ -13,11 +13,9 @@ if(process.env.NODE_ENV === 'development') {
 app.use(bodyParser.json())
 
 const accountsRoutes = require('./src/routes/accounts')
-//const transactionsRoutes = require('./src/routes/transactions')
 
 app.use('/accounts', accountsRoutes)
 app.use('/accounts/:acctId', accountsRoutes)
-//app.use('/accounts/:id/transactions', transactionsRoutes)
 
 app.use((err, req, res, next) => {
   const status = err.status || 500
